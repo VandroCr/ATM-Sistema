@@ -12,9 +12,37 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ContaDAO {
     private static final ConcurrentHashMap<String, Conta> contas = new ConcurrentHashMap<>();
     private static final AtomicLong idCounter = new AtomicLong();
+    private static final AtomicLong numeroContaSequencial = new AtomicLong(1);
     
     /**
-     * Cria uma nova conta bancária
+     * Gera um número de conta automaticamente no padrão: YYYY + 5 dígitos sequenciais
+     * Exemplo: 202600001, 202600002, etc.
+     */
+    private String gerarNumeroConta() {
+        int ano = java.time.Year.now().getValue();
+        long sequencial = numeroContaSequencial.getAndIncrement();
+        return String.format("%d%05d", ano, sequencial);
+    }
+    
+    /**
+     * Cria uma nova conta bancária com número gerado automaticamente
+     */
+    public Conta criarConta(String pin, String nomeTitular) {
+        String numeroConta = gerarNumeroConta();
+        
+        // Garantir que o número gerado não existe (caso raro, mas possível)
+        while (contas.containsKey(numeroConta)) {
+            numeroConta = gerarNumeroConta();
+        }
+        
+        Conta conta = new Conta(numeroConta, pin, nomeTitular);
+        conta.setId(idCounter.incrementAndGet());
+        contas.put(numeroConta, conta);
+        return conta;
+    }
+    
+    /**
+     * Cria uma nova conta bancária com número específico (método mantido para compatibilidade)
      */
     public Conta criarConta(String numeroConta, String pin, String nomeTitular) {
         if (contas.containsKey(numeroConta)) {

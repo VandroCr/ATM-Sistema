@@ -13,31 +13,25 @@ public class ContaService {
     }
     
     /**
-     * Cria uma nova conta bancária
+     * Cria uma nova conta bancária com número gerado automaticamente
+     * Retorna um array: [0] = mensagem, [1] = número da conta gerado
      */
-    public String criarConta(String numeroConta, String pin, String nomeTitular) {
-        if (numeroConta == null || numeroConta.trim().isEmpty()) {
-            return "Número de conta inválido";
-        }
-        
+    public String[] criarConta(String pin, String nomeTitular) {
         if (pin == null || pin.length() < 4) {
-            return "PIN deve ter pelo menos 4 dígitos";
+            return new String[]{"PIN deve ter pelo menos 4 dígitos", null};
         }
         
         if (nomeTitular == null || nomeTitular.trim().isEmpty()) {
-            return "Nome do titular é obrigatório";
+            return new String[]{"Nome do titular é obrigatório", null};
         }
         
-        if (contaDAO.existeConta(numeroConta)) {
-            return "Conta já existe";
-        }
-        
-        Conta conta = contaDAO.criarConta(numeroConta, pin, nomeTitular);
+        Conta conta = contaDAO.criarConta(pin, nomeTitular);
         if (conta != null) {
-            return "Conta criada com sucesso!";
+            String mensagem = "Conta criada com sucesso! Seu número de conta é: " + conta.getNumeroConta();
+            return new String[]{mensagem, conta.getNumeroConta()};
         }
         
-        return "Erro ao criar conta";
+        return new String[]{"Erro ao criar conta", null};
     }
     
     /**

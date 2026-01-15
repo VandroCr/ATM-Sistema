@@ -20,11 +20,6 @@
         
         <form action="registro" method="POST">
             <div class="grupo-formulario">
-                <label for="numeroConta">Número da Conta:</label>
-                <input type="text" id="numeroConta" name="numeroConta" required>
-            </div>
-            
-            <div class="grupo-formulario">
                 <label for="pin">PIN (mínimo 4 dígitos):</label>
                 <input type="password" id="pin" name="pin" required minlength="4">
             </div>
@@ -33,6 +28,10 @@
                 <label for="nomeTitular">Nome do Titular:</label>
                 <input type="text" id="nomeTitular" name="nomeTitular" required>
             </div>
+            
+            <p style="color: #666; font-size: 14px; text-align: center; margin: 15px 0;">
+                O número da conta será gerado automaticamente após o registro.
+            </p>
             
             <button type="submit" class="botao">Criar Conta</button>
         </form>

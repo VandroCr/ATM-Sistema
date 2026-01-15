@@ -29,18 +29,20 @@ public class RegistroServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String numeroConta = request.getParameter("numeroConta");
         String pin = request.getParameter("pin");
         String nomeTitular = request.getParameter("nomeTitular");
         
-        String resultado = contaService.criarConta(numeroConta, pin, nomeTitular);
+        String[] resultado = contaService.criarConta(pin, nomeTitular);
+        String mensagem = resultado[0];
+        String numeroContaGerado = resultado[1];
         
-        if (resultado.contains("sucesso")) {
-            request.setAttribute("mensagem", resultado);
+        if (mensagem.contains("sucesso")) {
+            request.setAttribute("mensagem", mensagem);
+            request.setAttribute("numeroConta", numeroContaGerado);
             request.setAttribute("tipoMensagem", "sucesso");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         } else {
-            request.setAttribute("mensagem", resultado);
+            request.setAttribute("mensagem", mensagem);
             request.setAttribute("tipoMensagem", "erro");
             request.getRequestDispatcher("/registro.jsp").forward(request, response);
         }

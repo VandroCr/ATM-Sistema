@@ -16,6 +16,14 @@
             <div class="caixa-alerta caixa-alerta-<%= request.getAttribute("tipoMensagem") %>">
                 <%= request.getAttribute("mensagem") %>
             </div>
+            <% if (request.getAttribute("numeroConta") != null) { %>
+                <div style="background: #e7f3ff; border: 2px solid #2196F3; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                    <strong style="color: #1976D2;">Anote seu número de conta:</strong><br>
+                    <span style="font-size: 24px; font-weight: bold; color: #0D47A1; letter-spacing: 2px;">
+                        <%= request.getAttribute("numeroConta") %>
+                    </span>
+                </div>
+            <% } %>
         <% } %>
         
         <form action="login" method="POST">
